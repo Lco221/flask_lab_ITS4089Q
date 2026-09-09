@@ -3,10 +3,6 @@
 
 This is a demo repo for The Flask Mega-Tutorial (https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world) in CodeSpace.
 
-## Build Python Flask 2 Apps with CodeSpace Play list
-
-[![Build Python Flask 2 Apps with CodeSpace](https://img.youtube.com/vi/a2D4bY0jEI0/0.jpg)](https://www.youtube.com/watch?v=a2D4bY0jEI0&list=PLtgJR0xD2TPeVeq6azvnKXYSeYHFzGaMi&index=1 "Build Python Flask 2 Apps with CodeSpace")
-
 
 ## How to work on this lab exercises?
 
