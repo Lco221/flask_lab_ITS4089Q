@@ -1,0 +1,64 @@
+
+<section class="catalog-intro" id="catalog">
+    <div>
+        <p class="eyebrow"><span class="eyebrow-dot"></span> MOVIE INDEX <span class="eyebrow-divider">/</span> 01</p>
+        <h1>電影探索<span class="heading-period">.</span></h1>
+        <p class="intro-copy">用片名或故事關鍵字，找到下一部想看的電影。</p>
+    </div>
+    <div class="catalog-total" aria-label="目前電影數量">
+        <span>片庫條目</span>
+        <strong>{{ movies|length }}</strong>
+        <small>部電影</small>
+    </div>
+</section>
+
+<section class="catalog-section" aria-labelledby="results-heading">
+    <div class="catalog-toolbar">
+        <div class="results-copy">
+            <p class="eyebrow">BROWSE THE COLLECTION</p>
+            <h2 id="results-heading">
+                {% if query %}搜尋結果{% else %}片庫選集{% endif %}
+                <span class="result-count">{{ movies|length }}</span>
+            </h2>
+        </div>
+        <form class="sort-form" action="{{ url_for('home') }}" method="get">
+            <input type="hidden" name="q" value="{{ query }}">
+            <label for="sort-by">排列方式</label>
+            <select id="sort-by" name="sort" onchange="this.form.submit()">
+                <option value="newest" {% if sort == 'newest' %}selected{% endif %}>最近新增</option>
+                <option value="title_asc" {% if sort == 'title_asc' %}selected{% endif %}>片名 A 到 Z</option>
+                <option value="title_desc" {% if sort == 'title_desc' %}selected{% endif %}>片名 Z 到 A</option>
+            </select>
+        </form>
+    </div>
+
+    {% if movies %}
+    <div class="movie-grid">
+        {% for movie in movies %}
+        <article class="movie-card">
+            <a class="movie-poster" href="{{ url_for('movie_detail', movie_id=movie[0]) }}" aria-label="查看 {{ movie[1] }} 電影詳情">
+                <img src="{{ movie[3] or url_for('static', filename='movie[3].jpg') }}" class="movie-img" alt="{{ movie[1] }} 電影海報" onerror="if (this.dataset.fallback) { this.parentElement.classList.add('image-error'); this.remove(); return; } this.dataset.fallback='true'; this.src='{{ url_for('static', filename='movie[3].jpg') }}';">
+                <span class="poster-fallback">海報資料整理中</span>
+                <span class="poster-index">FRAME FILE <b>#{{ '%02d'|format(movie[0]) }}</b></span>
+            </a>
+            <div class="movie-card-content">
+                <div class="movie-card-heading">
+                    <span class="movie-number">{{ '%02d'|format(loop.index) }}</span>
+                    <h3>{{ movie[1] }}</h3>
+                </div>
+                <p class="movie-description">{{ movie[2] or '這部電影的故事簡介即將補上。' }}</p>
+                <a class="text-link" href="{{ url_for('movie_detail', movie_id=movie[0]) }}">電影資料 <span aria-hidden="true">↗</span></a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <span class="empty-mark" aria-hidden="true">?</span>
+        <h3>沒有找到符合的電影</h3>
+        <p>試試較短的片名或不同的故事關鍵字。</p>
+        <a class="text-link" href="{{ url_for('home') }}">清除搜尋 <span aria-hidden="true">↗</span></a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

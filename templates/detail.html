@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ movie[1] }}{% endblock %}
+{% block content %}
+<nav class="breadcrumbs" aria-label="麵包屑導覽">
+    <a href="{{ url_for('home') }}">電影探索</a>
+    <span aria-hidden="true">/</span>
+    <span>{{ movie[1] }}</span>
+</nav>
+
+<article class="detail-layout">
+    <div class="detail-poster movie-poster">
+        <img src="{{ movie[3] or url_for('static', filename='movie[3].jpg') }}" class="movie-img" alt="{{ movie[1] }} 電影海報" onerror="this.parentElement.classList.add('image-error'); this.remove();">
+        <span class="poster-fallback">海報資料整理中</span>
+        <span class="poster-index">FRAME FILE <b>#{{ '%02d'|format(movie[0]) }}</b></span>
+    </div>
+    <div class="detail-copy">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> FEATURED FILM <span class="eyebrow-divider">/</span> #{{ '%02d'|format(movie[0]) }}</p>
+        <h1>{{ movie[1] }}</h1>
+        <p class="detail-description">{{ movie[2] or '這部電影的故事簡介即將補上。' }}</p>
+        <div class="detail-rule"></div>
+
+        <section class="review-section" id="reviews" aria-labelledby="reviews-heading">
+            <div class="review-heading">
+                <div>
+                    <p class="eyebrow">COMMUNITY NOTES</p>
+                    <h2 id="reviews-heading">觀眾影評 <span class="result-count">{{ reviews|length }}</span></h2>
+                </div>
+                <span class="review-count">影迷短評</span>
+            </div>
+            <form class="review-form" action="{{ url_for('add_review', movie_id=movie[0]) }}" method="post">
+                <label for="review-content">留下你的觀影感想</label>
+                <textarea id="review-content" name="content" rows="4" maxlength="2000" placeholder="哪個片刻讓你印象最深？" required></textarea>
+                <div class="review-form-footer">
+                    <span>最多 2,000 字</span>
+                    <button type="submit">發布影評 <span aria-hidden="true">↗</span></button>
+                </div>
+            </form>
+
+            {% if reviews %}
+            <div class="review-list">
+                {% for review in reviews %}
+                <article class="review-item">
+                    <span class="review-index">{{ '%02d'|format(loop.index) }}</span>
+                    <div>
+                        <p>{{ review[0] }}</p>
+                        <time>{{ review[1] }}</time>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="no-reviews">還沒有影評，寫下第一則觀影感想。</p>
+            {% endif %}
+        </section>
+    </div>
+</article>
+{% endblock %}

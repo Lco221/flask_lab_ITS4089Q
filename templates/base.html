@@ -1,17 +1,37 @@
-<html>
-
+<!doctype html>
+<html lang="zh-Hant">
 <head>
-    {% if title %}
-    <title>{{ title }} - Microblog</title>
-    {% else %}
-    <title>Welcome to Microblog</title>
-    {% endif %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#11130f">
+    <title>{% block title %}電影探索{% endblock %} | FRAME FILM INDEX</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
 </head>
-
 <body>
-    <div>Microblog: <a href="/index">Home</a></div>
-    <hr>
-    {% block content %}{% endblock %}
+    <a class="skip-link" href="#main-content">跳到主要內容</a>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="wordmark" href="{{ url_for('home') }}" aria-label="FRAME 電影目錄首頁">
+                <span class="wordmark-icon" aria-hidden="true">F</span>
+                <span class="wordmark-copy"><strong>FRAME</strong><small>FILM INDEX</small></span>
+            </a>
+            <form class="site-search" action="{{ url_for('home') }}" method="get" role="search">
+                <label class="visually-hidden" for="site-query">搜尋電影</label>
+                <input id="site-query" type="search" name="q" value="{{ request.args.get('q', '') }}" placeholder="搜尋片名或簡介">
+                <button type="submit">搜尋 <span aria-hidden="true">↗</span></button>
+            </form>
+            <a class="header-index" href="{{ url_for('home') }}#catalog">電影目錄 <span aria-hidden="true">↓</span></a>
+        </div>
+    </header>
+    <main id="main-content" class="main-shell">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer">
+        <span>FRAME <span class="footer-slash">/</span> FILM INDEX</span>
+        <span>為下一部好電影留個位置。</span>
+    </footer>
 </body>
-
 </html>
